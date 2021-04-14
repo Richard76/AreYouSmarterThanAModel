@@ -1,0 +1,26 @@
+/** 
+ * Plotly specific styles. 
+ *
+ * This css will be used in various places so it should be in a plain css
+ * for compatibility. No scss/less features such as variables.. 
+ */
+
+.legendpoints  .pointtext  text {
+  visibility: hidden!important;
+}
+
+/**
+ * Workaround to make the circles in the legend in even size. 
+ * https://community.plot.ly/t/controlling-legend-circle-size-in-bubble-plot/3418
+ * https://stackoverflow.com/questions/40098827/r-plotly-version-4-5-2-scatterplot-legend-bubble-size-settings
+ * https://stackoverflow.com/questions/524696/how-to-create-a-style-tag-with-javascript
+ *
+ * Note that we apply this style only to circle, strictly to say we apply this 
+ * to shapes using A(arch) command in SVG path. So other shapes especially 
+ * consists of straight lines like line, square, triangle, star etc are safe 
+ * including the "line-ew-open" line-shaped scatter marker type which is 
+ * used to draw the reference line for each x axis data point. 
+ */
+.legendpoints path.scatterpts[d*="A"] { 
+  d: path('M 3.2 0 A 3.2 3.2 0 1 1 0 -3.2 A 3.2 3.2 0 0 1 3.2 0 Z'); 
+}

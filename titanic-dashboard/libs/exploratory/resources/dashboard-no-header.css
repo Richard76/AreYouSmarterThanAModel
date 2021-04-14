@@ -1,0 +1,10 @@
+/** 
+ * Hide dashboard title. 
+ * https://stackoverflow.com/questions/43637756/r-flexdashboard-remove-title-bar
+ */
+body {
+  padding-top:8px
+}
+.navbar{
+  visibility: hidden
+}
