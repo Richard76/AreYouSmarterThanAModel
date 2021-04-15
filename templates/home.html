@@ -13,7 +13,7 @@
     <div id="app">
         <h1>Titanic Passengers</h1>
        
-	    <div id='myDiv'><!-- Plotly chart will be drawn inside this DIV --></div>
+	    <div id='byClass'><!-- Plotly chart will be drawn inside this DIV --></div>
 
 
 
@@ -43,41 +43,68 @@
                     url: '/apis/v1/'
                 }).then(response => {
                     this.passengers = response.data
+                    this.drawCharts();
                 })
+            
             },
+            drawCharts: function() {
+                var trace1 = {
+                x: ['First Class', 'Second Class', 'Third Class'],
+                y: [this.passengers.filter(passenger=>passenger.Passenger_Class === "First")
+                    .filter(passenger=>passenger.Survived === "Lived").length, 
 
+                    this.passengers.filter(passenger=>passenger.Passenger_Class === "Second")
+                    .filter(passenger=>passenger.Survived === "Lived").length, 
+
+                    this.passengers.filter(passenger=>passenger.Passenger_Class === "Third")
+                    .filter(passenger=>passenger.Survived === "Lived").length,
+                    
+                    ],
+                name: 'Survived',
+                type: 'bar'
+                };
+
+                var trace2 = {
+                x: ['First Class', 'Second Class', 'Third Class'],
+                y: [this.passengers.filter(passenger=>passenger.Passenger_Class === "First")
+                    .filter(passenger=>passenger.Survived === "Perished").length, 
+
+                    this.passengers.filter(passenger=>passenger.Passenger_Class === "Second")
+                    .filter(passenger=>passenger.Survived === "Perished").length, 
+
+                    this.passengers.filter(passenger=>passenger.Passenger_Class === "Third")
+                    .filter(passenger=>passenger.Survived === "Perished").length,
+                    
+                    ],
+                name: 'Perished',
+                type: 'bar'
+                };
+
+                var data = [trace1, trace2];
+
+                var layout = {barmode: 'stack'};
+
+                Plotly.newPlot('byClass', data, layout, {responsive: true});
+                
+            }
         },
+        watch: { 
+            passengers: function() {
+                this.drawCharts();
+            }
+        },
+
         created: function() {
             this.loadPassengers()
         },
         mounted: function() {
             this.csrf_token = document.querySelector('input[name="csrfmiddlewaretoken"]').value
+            
         }
     })
-    </script>
+ 
 
-
-    <script>
-
-        var trace1 = {
-        x: ['First Class', 'Second Class', 'Third Class'],
-        y: [20, 14, 23],
-        name: 'SF Zoo',
-        type: 'bar'
-        };
-
-        var trace2 = {
-        x: ['First Class', 'Second Class', 'Third Class'],
-        y: [12, 18, 29],
-        name: 'LA Zoo',
-        type: 'bar'
-        };
-
-        var data = [trace1, trace2];
-
-        var layout = {barmode: 'stack'};
-
-        Plotly.newPlot('myDiv', data, layout, {responsive: true});
+        
 
 
 
