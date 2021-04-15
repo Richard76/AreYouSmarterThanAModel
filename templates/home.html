@@ -48,7 +48,7 @@
             
             },
             drawCharts: function() {
-                var trace1 = {
+                var classLived = {
                 x: ['First Class', 'Second Class', 'Third Class'],
                 y: [this.passengers.filter(passenger=>passenger.Passenger_Class === "First")
                     .filter(passenger=>passenger.Survived === "Lived").length, 
@@ -64,7 +64,7 @@
                 type: 'bar'
                 };
 
-                var trace2 = {
+                var classPerished = {
                 x: ['First Class', 'Second Class', 'Third Class'],
                 y: [this.passengers.filter(passenger=>passenger.Passenger_Class === "First")
                     .filter(passenger=>passenger.Survived === "Perished").length, 
@@ -80,7 +80,7 @@
                 type: 'bar'
                 };
 
-                var data = [trace1, trace2];
+                var data = [classLived, classPerished];
 
                 var layout = {barmode: 'stack'};
 
