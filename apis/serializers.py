@@ -5,9 +5,5 @@ from passengers import models
 
 class PassengerSerializer(serializers.ModelSerializer):
     class Meta:
-        fields = (
-            'name',
-            'age',
-            'passenger_class',
-        )
+        fields = "__all__"
         model = models.Passenger

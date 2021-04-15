@@ -1,13 +1,20 @@
 from django.db import models
 
 class Passenger(models.Model):
-    name = models.CharField(max_length=50)
-    age = models.IntegerField()
-    passenger_class = models.CharField(max_length=10)
+    # id = models.IntegerField(primary_key=True)
+    Survived = models.CharField(max_length=10)
+    Passenger_Class = models.CharField(max_length=10, default="Third")
+    Sex = models.CharField(max_length=10)
+    Age = models.IntegerField()
+    Fare_Paid = models.IntegerField(default=0)
+    Embarked = models.CharField(max_length=10)
+    Size_of_Group = models.IntegerField()
+    Cabin_Class = models.CharField(max_length=1, default=0)
+    Title = models.CharField(max_length=12)
 
 
     def __str__(self):
-        return f'{self.name}'
+        return f'{self.PassengerId}'
 
 class QuizResult(models.Model):
     user = models.ForeignKey("auth.User", on_delete=models.CASCADE)

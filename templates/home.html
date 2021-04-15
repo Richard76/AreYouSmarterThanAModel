@@ -5,16 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Titanic</title>
+    <!-- Load plotly.js into the DOM -->
+	<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
 </head>
 <body>
     {% csrf_token %}
     <div id="app">
         <h1>Titanic Passengers</h1>
+       
+	    <div id='myDiv'><!-- Plotly chart will be drawn inside this DIV --></div>
+
+
+
         <ul>
             <li v-for="passenger in passengers">
-                <h3>[[ passenger.name ]]</h3>
-                <h4>[[ passenger.age ]]</h4>
-                <p>[[ passenger.passenger_class ]]</p>
+                <h3>id - [[ passenger.id ]]</h3>
+                <p>Age - [[ passenger.Age ]]</p>
+                <p>Sex - [[ passenger.Sex ]]</p>
             </li>
         </ul>
 
@@ -47,6 +54,33 @@
             this.csrf_token = document.querySelector('input[name="csrfmiddlewaretoken"]').value
         }
     })
+    </script>
+
+
+    <script>
+
+        var trace1 = {
+        x: ['First Class', 'Second Class', 'Third Class'],
+        y: [20, 14, 23],
+        name: 'SF Zoo',
+        type: 'bar'
+        };
+
+        var trace2 = {
+        x: ['First Class', 'Second Class', 'Third Class'],
+        y: [12, 18, 29],
+        name: 'LA Zoo',
+        type: 'bar'
+        };
+
+        var data = [trace1, trace2];
+
+        var layout = {barmode: 'stack'};
+
+        Plotly.newPlot('myDiv', data, layout, {responsive: true});
+
+
+
     </script>
 </body>
 </html>
