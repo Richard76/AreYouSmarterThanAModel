@@ -1,7 +1,52 @@
-{% if user.is_authenticated %}
-<h1>Welcome {{ user.username }}!</h1>
-<p><a href="{% url 'logout' %}">Logout</a><p>
-{% else %}
-<h1>Welcome, visitor!</h1>
-<p>You are not logged in. <a href="{% url 'login' %}">Login</a> <a href="{% url 'users:signup' %}">Sign Up</a></p>
-{% endif %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Titanic</title>
+</head>
+<body>
+    {% csrf_token %}
+    <div id="app">
+        <h1>Titanic Passengers</h1>
+        <ul>
+            <li v-for="passenger in passengers">
+                <h3>[[ passenger.name ]]</h3>
+                <h4>[[ passenger.age ]]</h4>
+                <p>[[ passenger.passenger_class ]]</p>
+            </li>
+        </ul>
+
+    </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/vue"></script>
+    <script>
+    const vm = new Vue({
+        el: '#app',
+        delimiters: ['[[',']]'],
+        data: {
+            passengers: [],
+            csrf_token: "",
+        },
+        methods: {
+            loadPassengers: function() {
+                axios({
+                    method: 'get',
+                    url: '/apis/v1/'
+                }).then(response => {
+                    this.passengers = response.data
+                })
+            },
+
+        },
+        created: function() {
+            this.loadPassengers()
+        },
+        mounted: function() {
+            this.csrf_token = document.querySelector('input[name="csrfmiddlewaretoken"]').value
+        }
+    })
+    </script>
+</body>
+</html>
