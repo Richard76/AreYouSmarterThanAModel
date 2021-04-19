@@ -12,11 +12,49 @@
     {% csrf_token %}
     <div id="app">
         <h1>Titanic Passengers</h1>
+
+        <hr>
+        <h3>Area for controls to go later</h3>
+
+        <hr>
+        <h3>Area to summarize survival percent of this segment</h3>
        
+        <hr>
+        <h2>Passenger Class</h2>
 	    <div id='byClass'><!-- Plotly chart will be drawn inside this DIV --></div>
 
+        <hr>
+        <h2>Sex</h2>
+	    <div id='bySex'><!-- Plotly chart will be drawn inside this DIV --></div>
+
+        <hr>
+        <h2>Age</h2>
+	    <div id='byAge'><!-- Plotly chart will be drawn inside this DIV --></div>
+
+        <hr>
+        <h2>Fare Paid</h2>
+	    <div id='byFare'><!-- Plotly chart will be drawn inside this DIV --></div>
+
+        <hr>
+        <h2>Embarked</h2>
+	    <div id='byEmbarked'><!-- Plotly chart will be drawn inside this DIV --></div>
+
+        <hr>
+        <h2>Group Size</h2>
+	    <div id='byGroupSize'><!-- Plotly chart will be drawn inside this DIV --></div>
+
+        <hr>
+        <h2>Cabin Class</h2>
+	    <div id='byCabinClass'><!-- Plotly chart will be drawn inside this DIV --></div>
+
+        <hr>
+        <h2>Title</h2>
+	    <div id='byTitle'><!-- Plotly chart will be drawn inside this DIV --></div>
 
 
+
+        <hr>
+        <h3>Raw Data Dump</h3>
         <ul>
             <li v-for="passenger in passengers">
                 <h3>id - [[ passenger.id ]]</h3>
@@ -43,11 +81,14 @@
                     url: '/apis/v1/'
                 }).then(response => {
                     this.passengers = response.data
+                    console.log(".")
                     this.drawCharts();
                 })
             
             },
             drawCharts: function() {
+
+                // 1. by passenger class
                 var classLived = {
                 x: ['First Class', 'Second Class', 'Third Class'],
                 y: [this.passengers.filter(passenger=>passenger.Passenger_Class === "First")
@@ -80,12 +121,348 @@
                 type: 'bar'
                 };
 
-                var data = [classLived, classPerished];
+                var data_class = [classLived, classPerished];
+                var layout_class = {barmode: 'stack'};
+                Plotly.newPlot('byClass', data_class, layout_class, {responsive: true});
 
-                var layout = {barmode: 'stack'};
+                // 2. by sex
+                var sexLived = {
+                x: ['Female', 'Male'],
+                y: [this.passengers.filter(passenger=>passenger.Sex === "female")
+                    .filter(passenger=>passenger.Survived === "Lived").length, 
 
-                Plotly.newPlot('byClass', data, layout, {responsive: true});
-                
+                    this.passengers.filter(passenger=>passenger.Sex === "male")
+                    .filter(passenger=>passenger.Survived === "Lived").length, 
+                    
+                    ],
+                name: 'Survived',
+                type: 'bar'
+                };
+
+                var sexPerished = {
+                x: ['Female', 'Male'],
+                y: [this.passengers.filter(passenger=>passenger.Sex === "female")
+                    .filter(passenger=>passenger.Survived === "Perished").length, 
+
+                    this.passengers.filter(passenger=>passenger.Sex === "male")
+                    .filter(passenger=>passenger.Survived === "Perished").length, 
+
+                    
+                    ],
+                name: 'Perished',
+                type: 'bar'
+                };
+
+                var data_class = [sexLived, sexPerished];
+                var layout_class = {barmode: 'stack'};
+                Plotly.newPlot('bySex', data_class, layout_class, {responsive: true}); 
+
+                // 3. by age
+                var ageLived = {
+                x: ['Under 15', '15 to 55', '55 & Over'],
+                y: [this.passengers.filter(passenger=>passenger.Age < 15)
+                    .filter(passenger=>passenger.Survived === "Lived").length, 
+
+                    this.passengers.filter(passenger=>passenger.Age >= 15 && passenger.Age < 55)
+                    .filter(passenger=>passenger.Survived === "Lived").length, 
+
+                    this.passengers.filter(passenger=>passenger.Age >= 55)
+                    .filter(passenger=>passenger.Survived === "Lived").length, 
+                    
+                    ],
+                name: 'Survived',
+                type: 'bar'
+                };
+
+                var agePerished = {
+                x: ['Under 15', '15 to 55', '55 & Over'],
+                y: [this.passengers.filter(passenger=>passenger.Age < 15)
+                    .filter(passenger=>passenger.Survived === "Perished").length, 
+
+                    this.passengers.filter(passenger=>passenger.Age >= 15 && passenger.Age < 55)
+                    .filter(passenger=>passenger.Survived === "Perished").length, 
+
+                    this.passengers.filter(passenger=>passenger.Age >= 55)
+                    .filter(passenger=>passenger.Survived === "Perished").length, 
+
+                    
+                    ],
+                name: 'Perished',
+                type: 'bar'
+                };
+
+                var data_age = [ageLived, agePerished];
+                var layout_age = {barmode: 'stack'};
+                Plotly.newPlot('byAge', data_age, layout_age, {responsive: true}); 
+
+
+
+                // 4. by fare paid
+                var fareLived = {
+                x: ['Under 50', '50 to 100', 'Over 100'],
+                y: [this.passengers.filter(passenger=>passenger.Fare_Paid < 50)
+                    .filter(passenger=>passenger.Survived === "Lived").length, 
+
+                    this.passengers.filter(passenger=>passenger.Fare_Paid >= 50 && passenger.Fare_Paid <= 100)
+                    .filter(passenger=>passenger.Survived === "Lived").length, 
+
+                    this.passengers.filter(passenger=>passenger.Fare_Paid > 100)
+                    .filter(passenger=>passenger.Survived === "Lived").length,
+                    
+                    ],
+                name: 'Survived',
+                type: 'bar'
+                };
+
+                var farePerished = {
+                x: ['Under 50', '50 to 100', 'Over 100'],
+                y: [this.passengers.filter(passenger=>passenger.Fare_Paid < 50)
+                    .filter(passenger=>passenger.Survived === "Perished").length, 
+
+                    this.passengers.filter(passenger=>passenger.Fare_Paid >= 50 && passenger.Fare_Paid <= 100)
+                    .filter(passenger=>passenger.Survived === "Perished").length, 
+
+                    this.passengers.filter(passenger=>passenger.Fare_Paid > 100)
+                    .filter(passenger=>passenger.Survived === "Perished").length, 
+
+                    
+                    ],
+                name: 'Perished',
+                type: 'bar'
+                };
+
+                var data_fare = [fareLived, farePerished];
+                var layout_fare = {barmode: 'stack'};
+                Plotly.newPlot('byFare', data_fare, layout_fare, {responsive: true}); 
+
+                // 5. by embarked
+                var embarkedLived = {
+                x: ['Cherbourg', 'Queenstown', 'Southampton'],
+                y: [this.passengers.filter(passenger=>passenger.Embarked === "Cherbourg")
+                    .filter(passenger=>passenger.Survived === "Lived").length, 
+
+                    this.passengers.filter(passenger=>passenger.Embarked === "Queenstown")
+                    .filter(passenger=>passenger.Survived === "Lived").length, 
+
+                    this.passengers.filter(passenger=>passenger.Embarked === "Southampton")
+                    .filter(passenger=>passenger.Survived === "Lived").length, 
+                    
+                    ],
+                name: 'Survived',
+                type: 'bar'
+                };
+
+                var embarkedPerished = {
+                x: ['Cherbourg', 'Queenstown', 'Southampton'],
+                y: [this.passengers.filter(passenger=>passenger.Embarked === "Cherbourg")
+                    .filter(passenger=>passenger.Survived === "Perished").length, 
+
+                    this.passengers.filter(passenger=>passenger.Embarked === "Queenstown")
+                    .filter(passenger=>passenger.Survived === "Perished").length, 
+
+                    this.passengers.filter(passenger=>passenger.Embarked === "Southampton")
+                    .filter(passenger=>passenger.Survived === "Perished").length, 
+
+                    
+                    ],
+                name: 'Perished',
+                type: 'bar'
+                };
+
+                var data_embarked = [embarkedLived, embarkedPerished];
+                var layout_embarked = {barmode: 'stack'};
+                Plotly.newPlot('byEmbarked', data_embarked, layout_embarked, {responsive: true}); 
+
+                // 6. by group size
+                var groupSizeLived = {
+                x: ['1', '2', '3', '4', '5 or more'],
+                y: [this.passengers.filter(passenger=>passenger.Size_of_Group === 1)
+                    .filter(passenger=>passenger.Survived === "Lived").length, 
+
+                    this.passengers.filter(passenger=>passenger.Size_of_Group === 2)
+                    .filter(passenger=>passenger.Survived === "Lived").length, 
+
+                    this.passengers.filter(passenger=>passenger.Size_of_Group === 3)
+                    .filter(passenger=>passenger.Survived === "Lived").length, 
+
+                    this.passengers.filter(passenger=>passenger.Size_of_Group === 4)
+                    .filter(passenger=>passenger.Survived === "Lived").length, 
+
+                    this.passengers.filter(passenger=>
+                        passenger.Size_of_Group != 1 && passenger.Size_of_Group != 2 && passenger.Size_of_Group != 3 && passenger.Size_of_Group != 4  
+                    )
+                    .filter(passenger=>passenger.Survived === "Perished").length,    
+                    ],
+
+                name: 'Survived',
+                type: 'bar'
+                };
+
+                var groupSizePerished = {
+                x: ['1', '2', '3', '4', '5 or more'],
+                y: [this.passengers.filter(passenger=>passenger.Size_of_Group === 1)
+                    .filter(passenger=>passenger.Survived === "Perished").length, 
+
+                    this.passengers.filter(passenger=>passenger.Size_of_Group === 2)
+                    .filter(passenger=>passenger.Survived === "Perished").length, 
+
+                    this.passengers.filter(passenger=>passenger.Size_of_Group === 3)
+                    .filter(passenger=>passenger.Survived === "Perished").length, 
+
+                    this.passengers.filter(passenger=>passenger.Size_of_Group === 4)
+                    .filter(passenger=>passenger.Survived === "Perished").length, 
+
+                    this.passengers.filter(passenger=>
+                        passenger.Size_of_Group != 1 && passenger.Size_of_Group != 2 && passenger.Size_of_Group != 3 && passenger.Size_of_Group != 4       
+                    )
+                    .filter(passenger=>passenger.Survived === "Perished").length, 
+
+                    
+                    ],
+                name: 'Perished',
+                type: 'bar'
+                };
+
+                var data_groupSize = [groupSizeLived, groupSizePerished];
+                var layout_groupSize = {barmode: 'stack', xaxis: {type:"category"}};
+                Plotly.newPlot('byGroupSize', data_groupSize, layout_groupSize, {responsive: true} ); 
+
+
+                // 7. by cabin class
+                var cabinClassLived = {
+                x: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'T', 'U'],
+                y: [this.passengers.filter(passenger=>passenger.Cabin_Class === "A")
+                    .filter(passenger=>passenger.Survived === "Lived").length, 
+
+                    this.passengers.filter(passenger=>passenger.Cabin_Class === "B")
+                    .filter(passenger=>passenger.Survived === "Lived").length, 
+
+                    this.passengers.filter(passenger=>passenger.Cabin_Class === "C")
+                    .filter(passenger=>passenger.Survived === "Lived").length, 
+
+                    this.passengers.filter(passenger=>passenger.Cabin_Class === "D")
+                    .filter(passenger=>passenger.Survived === "Lived").length, 
+
+                    this.passengers.filter(passenger=>passenger.Cabin_Class === "E")
+                    .filter(passenger=>passenger.Survived === "Lived").length, 
+
+                    this.passengers.filter(passenger=>passenger.Cabin_Class === "F")
+                    .filter(passenger=>passenger.Survived === "Lived").length, 
+
+                    this.passengers.filter(passenger=>passenger.Cabin_Class === "G")
+                    .filter(passenger=>passenger.Survived === "Lived").length, 
+
+                    this.passengers.filter(passenger=>passenger.Cabin_Class === "T")
+                    .filter(passenger=>passenger.Survived === "Lived").length, 
+
+                    this.passengers.filter(passenger=>passenger.Cabin_Class === "U")
+                    .filter(passenger=>passenger.Survived === "Lived").length, 
+                    
+                    ],
+                name: 'Survived',
+                type: 'bar'
+                };
+
+                var cabinClassPerished = {
+                x: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'T', 'U'],
+                y: [this.passengers.filter(passenger=>passenger.Cabin_Class === "A")
+                    .filter(passenger=>passenger.Survived === "Perished").length, 
+
+                    this.passengers.filter(passenger=>passenger.Cabin_Class === "B")
+                    .filter(passenger=>passenger.Survived === "Perished").length, 
+
+                    this.passengers.filter(passenger=>passenger.Cabin_Class === "C")
+                    .filter(passenger=>passenger.Survived === "Perished").length, 
+
+                    this.passengers.filter(passenger=>passenger.Cabin_Class === "D")
+                    .filter(passenger=>passenger.Survived === "Perished").length, 
+
+                    this.passengers.filter(passenger=>passenger.Cabin_Class === "E")
+                    .filter(passenger=>passenger.Survived === "Perished").length, 
+
+                    this.passengers.filter(passenger=>passenger.Cabin_Class === "F")
+                    .filter(passenger=>passenger.Survived === "Perished").length, 
+
+                    this.passengers.filter(passenger=>passenger.Cabin_Class === "G")
+                    .filter(passenger=>passenger.Survived === "Perished").length, 
+
+                    this.passengers.filter(passenger=>passenger.Cabin_Class === "T")
+                    .filter(passenger=>passenger.Survived === "Perished").length, 
+
+                    this.passengers.filter(passenger=>passenger.Cabin_Class === "U")
+                    .filter(passenger=>passenger.Survived === "Perished").length, 
+
+                    
+                    ],
+                name: 'Perished',
+                type: 'bar'
+                };
+
+                var data_cabinClass = [cabinClassLived, cabinClassPerished];
+                var layout_cabinClass = {barmode: 'stack'};
+                Plotly.newPlot('byCabinClass', data_cabinClass, layout_cabinClass, {responsive: true}); 
+
+                // 8. by Title
+                var titleLived = {
+                x: ['Mr', 'Mrs', 'Miss', 'Master', 'Other'],
+                y: [this.passengers.filter(passenger=>passenger.Title === "Mr")
+                    .filter(passenger=>passenger.Survived === "Lived").length, 
+
+                    this.passengers.filter(passenger=>passenger.Title === "Mrs")
+                    .filter(passenger=>passenger.Survived === "Lived").length, 
+
+                    this.passengers.filter(passenger=>passenger.Title === "Miss")
+                    .filter(passenger=>passenger.Survived === "Lived").length, 
+
+                    this.passengers.filter(passenger=>passenger.Title === "Master")
+                    .filter(passenger=>passenger.Survived === "Lived").length, 
+
+                    this.passengers.filter(
+                        passenger=>passenger.Title !== "Mr" && 
+                        passenger.Title !== "Mrs" && 
+                        passenger.Title !== "Miss" && 
+                        passenger.Title !== "Master"      
+                    )
+                    .filter(passenger=>passenger.Survived === "Lived").length, 
+                    
+                    ],
+                name: 'Survived',
+                type: 'bar'
+                };
+
+                var titlePerished = {
+                x: ['Mr', 'Mrs', 'Miss', 'Master', 'Other'],
+                y: [this.passengers.filter(passenger=>passenger.Title === "Mr")
+                    .filter(passenger=>passenger.Survived === "Perished").length, 
+
+                    this.passengers.filter(passenger=>passenger.Title === "Mrs")
+                    .filter(passenger=>passenger.Survived === "Perished").length, 
+
+                    this.passengers.filter(passenger=>passenger.Title === "Miss")
+                    .filter(passenger=>passenger.Survived === "Perished").length, 
+
+                    this.passengers.filter(passenger=>passenger.Title === "Master")
+                    .filter(passenger=>passenger.Survived === "Perished").length, 
+
+                    this.passengers.filter(
+                        passenger=>passenger.Title !== "Mr" && 
+                        passenger.Title !== "Mrs" && 
+                        passenger.Title !== "Miss" && 
+                        passenger.Title !== "Master"      
+                    )
+                    .filter(passenger=>passenger.Survived === "Perished").length, 
+
+                    
+                    ],
+                name: 'Perished',
+                type: 'bar'
+                };
+
+                var data_title = [titleLived, titlePerished];
+                var layout_title = {barmode: 'stack'};
+                Plotly.newPlot('byTitle', data_title, layout_title, {responsive: true}); 
+
+
             }
         },
         watch: { 
