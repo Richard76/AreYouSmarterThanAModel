@@ -1,0 +1,23 @@
+h1, h2, h3 {
+    text-align: center;
+}
+
+
+.row1 {
+    background-color: lightgrey;
+    min-height: 200px;
+}
+
+.row2, .row3 {
+    background-color: lightblue;
+}
+
+.prediction {
+    text-align: center;
+    vertical-align: middle;
+    line-height: 1.5;
+    font-size: 60px;
+}
+
+
+
