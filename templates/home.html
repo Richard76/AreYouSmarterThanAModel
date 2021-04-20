@@ -24,17 +24,18 @@
                     <fieldset>
                         <legend>Passenger Class</legend>
                         <div>
-                            <input type="checkbox" id="female" name="sex" value="female" checked="true">
-                            <label for="coding">First</label>
+                            <input v-model="passenger_class" type="checkbox" id="first" name="pclass" value="First" checked="true">
+                            <label for="first">First</label>
                         </div>
+
                         <div>
-                            <input type="checkbox" id="male" name="sex" value="male" checked="true">
-                            <label for="music">Second</label>
+                            <input v-model="passenger_class" type="checkbox" id="second" name="pclass" value="Second" checked="true">
+                            <label for="second">Second</label>
                         </div>
 
                          <div>
-                            <input type="checkbox" id="male" name="sex" value="male" checked="true">
-                            <label for="music">Third</label>
+                            <input v-model="passenger_class" type="checkbox" id="third" name="pclass" value="Third" checked="true">
+                            <label for="third">Third</label>
                         </div>
                     </fieldset>
                 </div>
@@ -43,18 +44,18 @@
                     <fieldset>
                         <legend>Embarked</legend>
                         <div>
-                            <input type="checkbox" id="female" name="sex" value="female" checked="true">
-                            <label for="coding">Cherbourg</label>
+                            <input v-model="passenger_embarked" type="checkbox" id="Cherbourg" name="sex" value="Cherbourg" checked="true">
+                            <label>Cherbourg</label>
                         </div>
 
                         <div>
-                            <input type="checkbox" id="male" name="sex" value="male" checked="true">
-                            <label for="music">Queenstown</label>
+                            <input v-model="passenger_embarked" type="checkbox" id="Queenstown" name="sex" value="Queenstown" checked="true">
+                            <label>Queenstown</label>
                         </div>
 
                         <div>
-                            <input type="checkbox" id="male" name="sex" value="male" checked="true">
-                            <label for="music">Southampton</label>
+                            <input v-model="passenger_embarked" type="checkbox" id="Southampton" name="sex" value="Southampton" checked="true">
+                            <label>Southampton</label>
                         </div>
                     </fieldset>
                 </div>
@@ -65,12 +66,12 @@
                     <fieldset>
                         <legend>Sex</legend>
                         <div>
-                            <input type="checkbox" id="female" name="sex" value="female" checked="true">
-                            <label for="coding">Female</label>
+                            <input v-model="passenger_sex" type="checkbox" id="female" name="sex" value="female" checked="true">
+                            <label>Female</label>
                         </div>
                         <div>
-                            <input type="checkbox" id="male" name="sex" value="male" checked="true">
-                            <label for="music">Male</label>
+                            <input v-model="passenger_sex" type="checkbox" id="male" name="sex" value="male" checked="true">
+                            <label>Male</label>
                         </div>
                     </fieldset>
 
@@ -78,24 +79,24 @@
                     <fieldset>
                         <legend>Group Size</legend>
                         <div>
-                            <input type="checkbox" id="female" name="sex" value="female" checked="true">
-                            <label for="coding">1</label>
+                            <input v-model="passenger_group_size" type="checkbox" id="1" name="size" value="1" checked="true">
+                            <label>1</label>
                         </div>
                         <div>
-                            <input type="checkbox" id="male" name="sex" value="male" checked="true">
-                            <label for="music">2</label>
+                            <input v-model="passenger_group_size" type="checkbox" id="2" name="size" value="2" checked="true">
+                            <label>2</label>
                         </div>
                         <div>
-                            <input type="checkbox" id="female" name="sex" value="female" checked="true">
-                            <label for="coding">3</label>
+                            <input v-model="passenger_group_size" type="checkbox" id="3" name="size" value="3" checked="true">
+                            <label>3</label>
                         </div>
                         <div>
-                            <input type="checkbox" id="male" name="sex" value="male" checked="true">
-                            <label for="music">4</label>
+                            <input v-model="passenger_group_size" type="checkbox" id="4" name="size" value="4" checked="true">
+                            <label>4</label>
                         </div>
                         <div>
-                            <input type="checkbox" id="female" name="sex" value="female" checked="true">
-                            <label for="coding">5 or more</label>
+                            <input v-model="passenger_group_size" type="checkbox" id="5" name="size" value="5 or more" checked="true">
+                            <label>5 or more</label>
                         </div>
                     </fieldset>
                 </div>
@@ -107,12 +108,12 @@
                     <fieldset>
                         <legend>Age</legend>
                         <div>
-                            <input type="checkbox" id="female" name="sex" value="female" checked="true">
-                            <label for="coding">Female</label>
+                            <label for="ticketNum">Minimum</label>
+                            <input id="ticketNum" type="number" name="ticketNum" value="0">
                         </div>
                         <div>
-                            <input type="checkbox" id="male" name="sex" value="male" checked="true">
-                            <label for="music">Male</label>
+                            <label for="ticketNum">Maximum</label>
+                            <input id="ticketNum" type="number" name="ticketNum" value="100">
                         </div>
                     </fieldset>
 
@@ -166,12 +167,12 @@
                     <fieldset>
                         <legend>Fare Paid</legend>
                         <div>
-                            <input type="checkbox" id="female" name="sex" value="female" checked="true">
-                            <label for="coding">Female</label>
+                            <label for="ticketNum">Minimum</label>
+                            <input id="ticketNum" type="number" name="ticketNum" value="0">
                         </div>
                         <div>
-                            <input type="checkbox" id="male" name="sex" value="male" checked="true">
-                            <label for="music">Male</label>
+                            <label for="ticketNum">Maximum</label>
+                            <input id="ticketNum" type="number" name="ticketNum" value="550">
                         </div>
                     </fieldset>
                     
@@ -292,6 +293,10 @@
         data: {
             passengers: [],
             csrf_token: "",
+            passenger_class: ["First", "Second", "Third"],
+            passenger_sex: ["female", "male"],
+            passenger_embarked: ["Cherbourg", "Queenstown", "Southampton"],
+            passenger_group_size: ["1", "2", "3", "4", "5 or more"], //"5 or more"
         },
         methods: {
             loadPassengers: function() {
@@ -300,6 +305,13 @@
                     url: '/apis/v1/'
                 }).then(response => {
                     this.passengers = response.data
+                        .filter(passenger=>this.passenger_class.includes(passenger.Passenger_Class))
+                        .filter(passenger=>this.passenger_sex.includes(passenger.Sex))
+                        .filter(passenger=>this.passenger_embarked.includes(passenger.Embarked))
+                        .filter(passenger=>{
+                            console.log(passenger.Size_of_Group.toString(), this.passenger_group_size, this.passenger_group_size.includes(passenger.Size_of_Group.toString()) )
+                            return this.passenger_group_size.includes(passenger.Size_of_Group > 4 ? "5 or more" : passenger.Size_of_Group.toString()) 
+                                 })// || this.passenger_group_size.includes("5 or more") ? passenger.Size_of_Group > 4 : false})
                     console.log(".")
                     this.drawCharts();
                 })
@@ -687,6 +699,18 @@
         watch: { 
             passengers: function() {
                 this.drawCharts();
+            },
+            passenger_class: function() {
+                this.loadPassengers();
+            },
+            passenger_embarked: function() {
+                this.loadPassengers();
+            },
+            passenger_sex: function() {
+                this.loadPassengers();
+            },
+            passenger_group_size: function() {
+                this.loadPassengers();
             }
         },
 
@@ -695,6 +719,7 @@
         },
         mounted: function() {
             this.csrf_token = document.querySelector('input[name="csrfmiddlewaretoken"]').value
+            
             
         }
     })
