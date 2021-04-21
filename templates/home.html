@@ -212,24 +212,19 @@
                 </div>
             </div>
 
-            
-
-
-        
-        
-
-            
-
             <div class="col">
-                <h3>Predicted Survival Rate</h3>
-                <p class= "prediction" >50.0%</p>
+                <h3>Segment Size</h3>
+                <p class = prediction>[[ passengers.length ]]</p>
+                <h3>People</h3>
             </div>
 
             <div class="col">
-                <h3>Actual Survival Rate</h3>
-                <p class = prediction>50.0%</p>
+                <h3>Survival Rate</h3>
+                <p class = prediction>[[ survived_percentage ]]%</p>
             </div>
         </div>
+
+     
 
 
         <div class="row row2"> 
@@ -276,6 +271,10 @@
                 <h2>Title</h2>
                 <div id='byTitle'><!-- Plotly chart will be drawn inside this DIV --></div>
             </div>
+
+            
+
+            
         </div>
 
 
@@ -304,9 +303,10 @@
             passenger_class: ["First", "Second", "Third"],
             passenger_sex: ["female", "male"],
             passenger_embarked: ["Cherbourg", "Queenstown", "Southampton"],
-            passenger_group_size: ["1", "2", "3", "4", "5 or more"], //"5 or more"
+            passenger_group_size: ["1", "2", "3", "4", "5 or more"], 
             Cabin_Class: ["A", "B", "C", "D", "E", "F", "G", "T", "U"],
             Title: ["Mr", "Mrs", "Miss", "Master", "Other"],
+            Possible_Titles: ["Mr", "Mrs", "Miss", "Master"],
             fare_low: 0,
             fare_high: 550,
             age_low: 0,
@@ -323,10 +323,17 @@
                             return this.passenger_group_size.includes(passenger.Size_of_Group > 4 ? "5 or more" : passenger.Size_of_Group.toString()) 
                                  })// || this.passenger_group_size.includes("5 or more") ? passenger.Size_of_Group > 4 : false})
                         .filter(passenger=>this.Cabin_Class.includes(passenger.Cabin_Class))
-                        .filter(passenger=>this.Title.includes(passenger.Title))
+                        .filter(passenger=>(this.Title.includes(passenger.Title) ||  (this.Title.includes("Other") && !this.Possible_Titles.includes(passenger.Title))))
                         .filter(passenger=>(passenger.Fare_Paid >= this.fare_low && passenger.Fare_Paid < this.fare_high))
                         .filter(passenger=>(passenger.Age >= this.age_low && passenger.Age < this.age_high))
-            }
+            },
+
+            survived_percentage: function() {
+                survived_number = (this.passengers.filter(passenger=>passenger.Survived === "Lived").length) // (this.passengers.filter(passenger.Survived === "Lived").length) 
+                total_number = this.passengers.length // this.passengers.length
+                return (100*(survived_number / total_number)).toFixed(1)
+            },
+
         },
         methods: {
             loadPassengers: function() {
