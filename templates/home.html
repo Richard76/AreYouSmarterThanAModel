@@ -106,15 +106,20 @@
             <div class="col-2">
                 <div class="row">
                     <fieldset>
-                        <legend>Age</legend>
-                        <div>
-                            <label for="ticketNum">Minimum</label>
-                            <input id="ticketNum" type="number" name="ticketNum" value="0">
-                        </div>
-                        <div>
-                            <label for="ticketNum">Maximum</label>
-                            <input id="ticketNum" type="number" name="ticketNum" value="100">
-                        </div>
+                        
+                            <legend>Age</legend>
+                            <p>From: </p>
+                            <div class="slidecontainer">
+                                <input v-model="age_low" type="range" min="0" max="100" value="0" class="slider" id="age_low">
+                            </div>
+                            <p>[[ age_low ]]</p>
+                            <hr>
+                            <p>To: </p>
+                            <div class="slidecontainer">
+                                <input v-model="age_high" type="range" min="0" max="100" value="100" class="slider" id="age_high">
+                            </div>
+                            <p>[[ age_high ]]</p>
+                        
                     </fieldset>
 
                     <div class="row">
@@ -166,14 +171,17 @@
                 <div class="row">
                     <fieldset>
                         <legend>Fare Paid</legend>
-                        <div>
-                            <label for="ticketNum">Minimum</label>
-                            <input id="ticketNum" type="number" name="ticketNum" value="0">
+                        <p>From: </p>
+                        <div class="slidecontainer">
+                            <input v-model="fare_low" type="range" min="0" max="550" value="0" class="slider" id="fare_low">
                         </div>
-                        <div>
-                            <label for="ticketNum">Maximum</label>
-                            <input id="ticketNum" type="number" name="ticketNum" value="550">
+                        <p>[[ fare_low ]]</p>
+                        <hr>
+                        <p>To: </p>
+                        <div class="slidecontainer">
+                            <input v-model="fare_high" type="range" min="0" max="550" value="550" class="slider" id="fare_high">
                         </div>
+                        <p>[[ fare_high ]]</p>
                     </fieldset>
                     
                     <div class="row">
@@ -291,22 +299,22 @@
         el: '#app',
         delimiters: ['[[',']]'],
         data: {
-            passengers: [],
+            all_passengers: [],
             csrf_token: "",
             passenger_class: ["First", "Second", "Third"],
             passenger_sex: ["female", "male"],
             passenger_embarked: ["Cherbourg", "Queenstown", "Southampton"],
             passenger_group_size: ["1", "2", "3", "4", "5 or more"], //"5 or more"
             Cabin_Class: ["A", "B", "C", "D", "E", "F", "G", "T", "U"],
-            Title: ["Mr", "Mrs", "Miss", "Master", "Other"]
+            Title: ["Mr", "Mrs", "Miss", "Master", "Other"],
+            fare_low: 0,
+            fare_high: 550,
+            age_low: 0,
+            age_high: 100,
         },
-        methods: {
-            loadPassengers: function() {
-                axios({
-                    method: 'get',
-                    url: '/apis/v1/'
-                }).then(response => {
-                    this.passengers = response.data
+        computed: {
+            passengers: function() {
+                return this.all_passengers
                         .filter(passenger=>this.passenger_class.includes(passenger.Passenger_Class))
                         .filter(passenger=>this.passenger_sex.includes(passenger.Sex))
                         .filter(passenger=>this.passenger_embarked.includes(passenger.Embarked))
@@ -316,6 +324,28 @@
                                  })// || this.passenger_group_size.includes("5 or more") ? passenger.Size_of_Group > 4 : false})
                         .filter(passenger=>this.Cabin_Class.includes(passenger.Cabin_Class))
                         .filter(passenger=>this.Title.includes(passenger.Title))
+                        .filter(passenger=>(passenger.Fare_Paid >= this.fare_low && passenger.Fare_Paid < this.fare_high))
+                        .filter(passenger=>(passenger.Age >= this.age_low && passenger.Age < this.age_high))
+            }
+        },
+        methods: {
+            loadPassengers: function() {
+                axios({
+                    method: 'get',
+                    url: '/apis/v1/'
+                }).then(response => {
+                    this.all_passengers = response.data
+                        // .filter(passenger=>this.passenger_class.includes(passenger.Passenger_Class))
+                        // .filter(passenger=>this.passenger_sex.includes(passenger.Sex))
+                        // .filter(passenger=>this.passenger_embarked.includes(passenger.Embarked))
+                        // .filter(passenger=>{
+                        //     console.log(passenger.Size_of_Group.toString(), this.passenger_group_size, this.passenger_group_size.includes(passenger.Size_of_Group.toString()) )
+                        //     return this.passenger_group_size.includes(passenger.Size_of_Group > 4 ? "5 or more" : passenger.Size_of_Group.toString()) 
+                        //          })// || this.passenger_group_size.includes("5 or more") ? passenger.Size_of_Group > 4 : false})
+                        // .filter(passenger=>this.Cabin_Class.includes(passenger.Cabin_Class))
+                        // .filter(passenger=>this.Title.includes(passenger.Title))
+                        // .filter(passenger=>(passenger.Fare_Paid > this.fare_low && passenger.Fare_Paid < this.fare_high)) 
+                        
                     console.log(".")
                     this.drawCharts();
                 })
@@ -704,24 +734,27 @@
             passengers: function() {
                 this.drawCharts();
             },
-            passenger_class: function() {
-                this.loadPassengers();
-            },
-            passenger_embarked: function() {
-                this.loadPassengers();
-            },
-            passenger_sex: function() {
-                this.loadPassengers();
-            },
-            passenger_group_size: function() {
-                this.loadPassengers();
-            },
-            Cabin_Class: function() {
-                this.loadPassengers();
-            },
-            Title: function() {
-                this.loadPassengers();
-            },
+            // passenger_class: function() {
+            //     this.loadPassengers();
+            // },
+            // passenger_embarked: function() {
+            //     this.loadPassengers();
+            // },
+            // passenger_sex: function() {
+            //     this.loadPassengers();
+            // },
+            // passenger_group_size: function() {
+            //     this.loadPassengers();
+            // },
+            // Cabin_Class: function() {
+            //     this.loadPassengers();
+            // },
+            // Title: function() {
+            //     this.loadPassengers();
+            // },
+            // fare_low: function() {
+            //     this.loadPassengers();
+            // },
         },
 
         created: function() {
