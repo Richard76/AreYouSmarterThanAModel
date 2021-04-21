@@ -121,40 +121,40 @@
                     <fieldset>
                         <legend>Cabin Class</legend>
                         <div>
-                            <input type="checkbox" id="female" name="sex" value="female" checked="true">
+                            <input v-model="Cabin_Class" type="checkbox" id="A" name="Cabin_Class" value="A" checked="true">
                             <label for="coding">A</label>
                         </div>
                         <div>
-                            <input type="checkbox" id="male" name="sex" value="male" checked="true">
-                            <label for="music">B</label>
+                            <input v-model="Cabin_Class" type="checkbox" id="B" name="Cabin_Class" value="B" checked="true">
+                            <label>B</label>
                         </div>
                         <div>
-                            <input type="checkbox" id="female" name="sex" value="female" checked="true">
-                            <label for="coding">C</label>
+                            <input v-model="Cabin_Class" type="checkbox" id="C" name="Cabin_Class" value="C" checked="true">
+                            <label>C</label>
                         </div>
                         <div>
-                            <input type="checkbox" id="male" name="sex" value="male" checked="true">
-                            <label for="music">D</label>
+                            <input v-model="Cabin_Class" type="checkbox" id="D" name="Cabin_Class" value="D" checked="true">
+                            <label>D</label>
                         </div>
                         <div>
-                            <input type="checkbox" id="female" name="sex" value="female" checked="true">
-                            <label for="coding">E</label>
+                            <input v-model="Cabin_Class" type="checkbox" id="E" name="Cabin_Class" value="E" checked="true">
+                            <label>E</label>
                         </div>
                         <div>
-                            <input type="checkbox" id="male" name="sex" value="male" checked="true">
-                            <label for="music">F</label>
+                            <input v-model="Cabin_Class" type="checkbox" id="F" name="Cabin_Class" value="F" checked="true">
+                            <label>F</label>
                         </div>
                         <div>
-                            <input type="checkbox" id="female" name="sex" value="female" checked="true">
-                            <label for="coding">G</label>
+                            <input v-model="Cabin_Class" type="checkbox" id="G" name="Cabin_Class" value="G" checked="true">
+                            <label>G</label>
                         </div>
                         <div>
-                            <input type="checkbox" id="male" name="sex" value="male" checked="true">
-                            <label for="music">T</label>
+                            <input v-model="Cabin_Class" type="checkbox" id="T" name="Cabin_Class" value="T" checked="true">
+                            <label>T</label>
                         </div>
                         <div>
-                            <input type="checkbox" id="female" name="sex" value="female" checked="true">
-                            <label for="coding">U</label>
+                            <input v-model="Cabin_Class" type="checkbox" id="U" name="Cabin_Class" value="U" checked="true">
+                            <label>U</label>
                         </div>
 
                     </fieldset>
@@ -180,24 +180,24 @@
                     <fieldset>
                         <legend>Title</legend>
                         <div>
-                            <input type="checkbox" id="female" name="sex" value="female" checked="true">
-                            <label for="coding">Mr</label>
+                            <input v-model="Title" type="checkbox" id="Mr" name="title" value="Mr" checked="true">
+                            <label>Mr</label>
                         </div>
                         <div>
-                            <input type="checkbox" id="male" name="sex" value="male" checked="true">
-                            <label for="music">Mrs</label>
+                            <input v-model="Title" type="checkbox" id="Mrs" name="title" value="Mrs" checked="true">
+                            <label>Mrs</label>
                         </div>
                         <div>
-                            <input type="checkbox" id="female" name="sex" value="female" checked="true">
-                            <label for="coding">Miss</label>
+                            <input v-model="Title" type="checkbox" id="Miss" name="title" value="Miss" checked="true">
+                            <label>Miss</label>
                         </div>
                         <div>
-                            <input type="checkbox" id="male" name="sex" value="male" checked="true">
-                            <label for="music">Master</label>
+                            <input v-model="Title" type="checkbox" id="Master" name="title" value="Master" checked="true">
+                            <label>Master</label>
                         </div>
                         <div>
-                            <input type="checkbox" id="female" name="sex" value="female" checked="true">
-                            <label for="coding">Other</label>
+                            <input v-model="Title" type="checkbox" id="Other" name="title" value="Other" checked="true">
+                            <label>Other</label>
                         </div>
                     </fieldset>
                 </div>
@@ -297,6 +297,8 @@
             passenger_sex: ["female", "male"],
             passenger_embarked: ["Cherbourg", "Queenstown", "Southampton"],
             passenger_group_size: ["1", "2", "3", "4", "5 or more"], //"5 or more"
+            Cabin_Class: ["A", "B", "C", "D", "E", "F", "G", "T", "U"],
+            Title: ["Mr", "Mrs", "Miss", "Master", "Other"]
         },
         methods: {
             loadPassengers: function() {
@@ -312,6 +314,8 @@
                             console.log(passenger.Size_of_Group.toString(), this.passenger_group_size, this.passenger_group_size.includes(passenger.Size_of_Group.toString()) )
                             return this.passenger_group_size.includes(passenger.Size_of_Group > 4 ? "5 or more" : passenger.Size_of_Group.toString()) 
                                  })// || this.passenger_group_size.includes("5 or more") ? passenger.Size_of_Group > 4 : false})
+                        .filter(passenger=>this.Cabin_Class.includes(passenger.Cabin_Class))
+                        .filter(passenger=>this.Title.includes(passenger.Title))
                     console.log(".")
                     this.drawCharts();
                 })
@@ -711,7 +715,13 @@
             },
             passenger_group_size: function() {
                 this.loadPassengers();
-            }
+            },
+            Cabin_Class: function() {
+                this.loadPassengers();
+            },
+            Title: function() {
+                this.loadPassengers();
+            },
         },
 
         created: function() {
