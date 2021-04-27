@@ -15,6 +15,7 @@
 
 <body>
     {% csrf_token %}
+    <div v-if="show_results">
     <div id="challenge" class="container">
 
 
@@ -24,7 +25,7 @@
         <ul>
             <li v-for="passenger, i in ten_random_passengers" v-bind:key="i">
                 <hr>
-                <h1>Passenger [[ i + 1 ]]</h1>
+                <h1>Question [[ i + 1 ]] of 10</h1>
                 <p>Age - [[ passenger.Age ]]</p>
                 <p>Sex - [[ passenger.Sex ]]</p>
                 <p>Passenger Class - [[ passenger.Passenger_Class ]] </p>
@@ -37,14 +38,34 @@
                 <p>Predicted Outcome - [[ passenger["prediction(Survived)"] ]] </p>
                 <p>Actual Outcome - [[ passenger.Survived ]] </p>
                 <hr>
+                <p><bold>Your Prediction for Question [[ i + 1 ]] of 10: </bold></p>
                 <input v-model="passenger.prediction_from_user" type="radio" :name="i" :id="i+'1'" value="Lived"> Lived              
                 <input v-model="passenger.prediction_from_user" type="radio" :name="i" :id="i+'2'" value="Perished"> Perished 
                 <br>
-                <p>Your Prediction: [[ passenger.prediction_from_user ]]</p>
+                <br>
+                <p>[[ passenger.prediction_from_user ]]</p>
 
             </li>
         </ul>
+        <button type="button">Submit Answers for Scoring</button>
+        
 
+        <div v-if="show_results">
+            <p>Click the button to show the results</p>
+        </div>
+
+        <div v-else>
+            <hr>
+            <h2>Your Results</h2>
+            <p>You got [[ human_score ]] out of 10 correct</p>
+            <p>The ML model got [[ model_score ]] out of 10 correct</p>
+            <hr>
+        </div>
+        
+
+
+
+    </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
@@ -59,8 +80,8 @@
                 ten_random_passengers_on_load: [],
                 ten_random_passengers_from_api: [],
                 ten_random_passengers: [],
-
                 csrf_token: "",
+                show_results: false,
 
                 
             },
@@ -111,7 +132,22 @@
                 this.csrf_token = document.querySelector('input[name="csrfmiddlewaretoken"]').value
 
 
-            }
+            },
+
+            computed: {
+
+
+            human_score: function() {
+                human_number = this.ten_random_passengers.filter(passenger=>passenger.Survived === passenger.prediction_from_user).length
+                return human_number
+            },
+
+            model_score: function() {
+                model_number = this.ten_random_passengers.filter(passenger=>passenger.Survived === passenger["prediction(Survived)"]).length
+                return model_number
+            },
+
+        },
     })
 
 
