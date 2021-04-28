@@ -18,10 +18,17 @@
     <div v-if="show_results">
     <div id="challenge" class="container">
 
+        <div v-if="show_results">
+            <br>
+        </div>
 
+
+
+        <div v-else>
         <h1>Titanic Challenge Quiz</h1>
 
-        <h3>10 Random Passengers</h3>
+        <h3>Make Your Predictions for 10 Randomly Chosen Passengers</h3>
+        <h4>Can you generate better predictions than a Machine Learning Model?</h4>
         <ul>
             <li v-for="passenger, i in ten_random_passengers" v-bind:key="i">
                 <hr>
@@ -35,32 +42,44 @@
                 <p>Cabin Class - [[ passenger.Cabin_Class ]] </p>
                 <p>Title - [[ passenger.Title ]] </p>
                 <hr>
+                <!-- 
+                <hr>
                 <p>Predicted Outcome - [[ passenger["prediction(Survived)"] ]] </p>
                 <p>Actual Outcome - [[ passenger.Survived ]] </p>
                 <hr>
+                --> 
+
                 <p><bold>Your Prediction for Question [[ i + 1 ]] of 10: </bold></p>
                 <input v-model="passenger.prediction_from_user" type="radio" :name="i" :id="i+'1'" value="Lived"> Lived              
                 <input v-model="passenger.prediction_from_user" type="radio" :name="i" :id="i+'2'" value="Perished"> Perished 
                 <br>
                 <br>
-                <p>[[ passenger.prediction_from_user ]]</p>
+                <!--  <p>[[ passenger.prediction_from_user ]]</p> --> 
 
             </li>
         </ul>
-        <button type="button">Submit Answers for Scoring</button>
+        <button @click="show_results=show_results?false:true" type="button">Submit Answers for Scoring</button>
+        <br>
+        <hr>
+        </div>
         
 
         <div v-if="show_results">
-            <p>Click the button to show the results</p>
+            <br>
+            <h1>Your Challenge Results</h1>
+            <p>You got [[ human_score ]] out of 10 correct</p>
+            <p>The machine learning model got [[ model_score ]] out of 10 correct</p>
+            <br>
+            <button onClick="window.location.reload();">Redo Challenge</button>
+            <br>
+            <br>
+            <a href="/">Go Back to the Dashboard</a>
+
+            <hr>
+            
         </div>
 
-        <div v-else>
-            <hr>
-            <h2>Your Results</h2>
-            <p>You got [[ human_score ]] out of 10 correct</p>
-            <p>The ML model got [[ model_score ]] out of 10 correct</p>
-            <hr>
-        </div>
+        
         
 
 
