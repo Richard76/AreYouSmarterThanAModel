@@ -7,7 +7,7 @@ class Passenger(models.Model):
     Sex = models.CharField(max_length=10)
     Age = models.IntegerField()
     Fare_Paid = models.IntegerField(default=0)
-    Embarked = models.CharField(max_length=10)
+    Embarked = models.CharField(max_length=20)
     Size_of_Group = models.IntegerField()
     Cabin_Class = models.CharField(max_length=1, default=0)
     Title = models.CharField(max_length=12)
