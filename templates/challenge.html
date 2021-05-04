@@ -11,14 +11,40 @@
         integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
     <link rel="stylesheet" href="/static/css/styles.css">
     <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+
+    <meta name="description" content="Dashboard vs Predictions.">
+    <link rel="stylesheet" href="/static/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/assets/css/Contact-Form-Clean.css">
+    <link rel="stylesheet" href="/static/assets/css/Navigation-Clean.css">
+    <link rel="stylesheet" href="/static/assets/css/styles.css">
+    <link rel="stylesheet" href="/static/assets/css/Team-Boxed.css">
+
 </head>
 
 
 
 <body>
 
+    <nav class="navbar navbar-light navbar-expand-md navigation-clean">
+        <div class="container"><a class="navbar-brand" href="/">White Star Line</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link" href="/dashboard">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/challenge">Challenge</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+        <hr>
+        <h1 align="center">Challenge</h1>
+        <hr>
+
 {% if user.is_authenticated %}
-    <h1>Welcome {{ user.username }}!</h1>
+    <h2>Welcome {{ user.username }}!</h2>
     <p align="center"><a href="{% url 'logout' %}">Logout</a><p>
     <hr>
 
@@ -83,7 +109,7 @@
             <button onClick="window.location.reload();">Redo Challenge</button>
             <br>
             <br>
-            <a href="/">Go Back to the Dashboard</a>
+            <a href="/dashboard">Go Back to the Dashboard</a>
 
             <hr>
             
