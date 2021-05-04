@@ -7,4 +7,5 @@ app_name = 'passengers'
 urlpatterns = [
     path('', TemplateView.as_view(template_name="home.html"), name='home'),
     path('challenge', TemplateView.as_view(template_name="challenge.html"), name='challenge'),
+    path('dashboard', TemplateView.as_view(template_name="dashboard.html"), name='dashboard'),
 ]
